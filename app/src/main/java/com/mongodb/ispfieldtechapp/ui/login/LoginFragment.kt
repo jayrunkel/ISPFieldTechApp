@@ -1,5 +1,6 @@
 package com.mongodb.ispfieldtechapp.ui.login
 
+import android.net.Uri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.annotation.StringRes
@@ -15,8 +16,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
 import com.mongodb.ispfieldtechapp.databinding.FragmentLoginBinding
+
 
 import com.mongodb.ispfieldtechapp.R
 import io.realm.mongodb.App
@@ -121,6 +124,10 @@ class LoginFragment : Fragment() {
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+
+        val curView = this.view ?: return
+        val action : LoginFragmentDirections.ActionLoginFragmentToTicketFragment = LoginFragmentDirections.actionLoginFragmentToTicketFragment(model.displayName)
+        Navigation.findNavController(curView).navigate(action)
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

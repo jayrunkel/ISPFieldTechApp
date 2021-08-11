@@ -1,5 +1,6 @@
 package com.mongodb.ispfieldtechapp
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import io.realm.Realm
@@ -11,4 +12,9 @@ class MainActivity : AppCompatActivity() {
 
         Realm.init(this)
     }
+/*
+    override fun onFragmentInteraction(uri: Uri) {
+
+    }
+ */
 }
