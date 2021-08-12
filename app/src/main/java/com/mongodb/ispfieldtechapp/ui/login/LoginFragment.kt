@@ -126,7 +126,8 @@ class LoginFragment : Fragment() {
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
 
         val curView = this.view ?: return
-        val action : LoginFragmentDirections.ActionLoginFragmentToTicketFragment = LoginFragmentDirections.actionLoginFragmentToTicketFragment(model.displayName)
+        //val action : LoginFragmentDirections.ActionLoginFragmentToTicketFragment = LoginFragmentDirections.actionLoginFragmentToTicketFragment(model.displayName)
+        val action : LoginFragmentDirections.ActionLoginFragmentToTechnicianCardFragment = LoginFragmentDirections.actionLoginFragmentToTechnicianCardFragment(model.displayName)
         Navigation.findNavController(curView).navigate(action)
     }
 

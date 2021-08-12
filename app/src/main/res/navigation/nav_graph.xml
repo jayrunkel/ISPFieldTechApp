@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_ticketFragment"
             app:destination="@id/ticketFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_technicianCardFragment"
+            app:destination="@id/technicianCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/ticketFragment"
@@ -89,5 +92,14 @@
         <action
             android:id="@+id/action_customerProfileFragment_to_editTicketFragment"
             app:destination="@id/editTicketFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/technicianCardFragment"
+        android:name="com.mongodb.ispfieldtechapp.TechnicianCardFragment"
+        android:label="fragment_technician_card"
+        tools:layout="@layout/fragment_technician_card">
+        <argument
+            android:name="technician"
+            app:argType="string" />
     </fragment>
 </navigation>
