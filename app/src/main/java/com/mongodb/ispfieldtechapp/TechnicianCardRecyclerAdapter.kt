@@ -1,5 +1,6 @@
 package com.mongodb.ispfieldtechapp
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
@@ -7,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 
 import androidx.recyclerview.widget.RecyclerView
+import com.mongodb.ispfieldtechapp.data.model.Technician
+import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
+import com.mongodb.ispfieldtechapp.data.model.Ticket
+import io.realm.RealmList
 
-import com.mongodb.ispfieldtechapp.R
-
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
-
+class TechnicianCardRecyclerAdapter (val techCardViewModel: TechnicianCardViewModel) : RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>() {
+/*
     private val titles = arrayOf("Chapter One",
         "Chapter Two", "Chapter Three", "Chapter Four",
         "Chapter Five", "Chapter Six", "Chapter Seven",
@@ -21,7 +24,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         "Item three details", "Item four details",
         "Item five details", "Item six details",
         "Item seven details", "Item eight details")
-
+*/
     private val images = intArrayOf(
         R.drawable.android_image_1,
         R.drawable.android_image_2,
@@ -45,21 +48,31 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         }
     }
 
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int):
             ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.card_layout, viewGroup, false)
+
         return ViewHolder(v)
     }
 
+    private fun getTickets() : RealmList<Ticket> {
+        return techCardViewModel.getTickets()
+    }
+
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.itemTitle.text = titles[i]
-        viewHolder.itemDetail.text = details[i]
-        viewHolder.itemImage.setImageResource(images[i])
+        val tickets : RealmList<Ticket> = getTickets()
+        Log.v("QUICKSTART", "onBindViewHolder with ${tickets?.size} tickets")
+        viewHolder.itemTitle.text =
+            "${tickets[i]?.ticketNum}: ${tickets[i]?.createDate} [${tickets[i]?.status}]"
+        viewHolder.itemDetail.text = tickets[i]?.description
+        viewHolder.itemImage.setImageResource(images[1])
     }
 
     override fun getItemCount(): Int {
-        return titles.size
+        val tickets = getTickets()
+        return tickets.size
     }
 
 }

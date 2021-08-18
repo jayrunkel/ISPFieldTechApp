@@ -1,14 +1,20 @@
 package com.mongodb.ispfieldtechapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil.setContentView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mongodb.ispfieldtechapp.RecyclerAdapter
+import com.mongodb.ispfieldtechapp.data.model.Technician
+import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
+import com.mongodb.ispfieldtechapp.data.model.Ticket
 import com.mongodb.ispfieldtechapp.databinding.FragmentTechnicianCardBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,40 +33,59 @@ private const val ARG_PARAM2 = "param2"
  */
 class TechnicianCardFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var technician: String? = null
 
     lateinit private var binding : FragmentTechnicianCardBinding
     private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
+    private var adapterTechnicianCard: RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>? = null
 
+    val model: TechnicianCardViewModel by viewModels(factoryProducer = {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                val realmApp = (requireActivity().application as ISPFieldTechApplication).techApp
+                return TechnicianCardViewModel(realmApp) as T
+            }
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            technician = it.getString("technician")
+            model.setTechnician(technician!!)
+            model.connToRealmApp()
         }
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_technician_card, container, false)
         layoutManager = LinearLayoutManager(context)
-        adapter = RecyclerAdapter()
+        adapterTechnicianCard = TechnicianCardRecyclerAdapter(model)
         binding = FragmentTechnicianCardBinding.inflate(inflater, container, false)
         binding.technicianCardInclude.recyclerView.layoutManager
-        binding.technicianCardInclude.recyclerView.adapter = adapter
-
+        binding.technicianCardInclude.recyclerView.adapter = adapterTechnicianCard
 
         //binding.contentMain.recyclerView.layoutManager = layoutManager
         //binding.contentMain.recyclerView.adapter = adapter
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+ /*     TODO: ADD CODE TO UPDATE RECYCLER WHEN REALM CHANGES */
+        val messageObserver = Observer<List<Technician>?> { _ ->
+            Log.v("QUICKSTART", "Notify recycler that the data set has changed")
+            adapterTechnicianCard?.notifyDataSetChanged()
+        }
+
+        model._technicianObject?.observe(viewLifecycleOwner, messageObserver)
+        adapterTechnicianCard?.notifyDataSetChanged()
     }
 
     companion object {
