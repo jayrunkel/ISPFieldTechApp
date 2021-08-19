@@ -1,5 +1,6 @@
 package com.mongodb.ispfieldtechapp.data.realmsync
 
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import io.realm.OrderedRealmCollectionChangeListener
@@ -26,6 +27,7 @@ class LiveRealmResults<T : RealmModel?> @MainThread constructor(results: RealmRe
     // This could be expanded to also return the change set in a pair.
     private val listener =
         OrderedRealmCollectionChangeListener<RealmResults<T>> { results, changeSet ->
+            Log.v("QUICKSTART", "new LiveRealmResult changeset")
             this@LiveRealmResults.setValue(
                 results
             )

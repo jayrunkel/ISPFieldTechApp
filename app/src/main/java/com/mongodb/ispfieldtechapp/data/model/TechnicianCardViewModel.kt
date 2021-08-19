@@ -17,7 +17,7 @@ class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
 
     var _technicianObject : LiveRealmResults<Technician>? = null
 
-    private fun openRealm() {
+    fun openRealm(callback : (result: String? ) -> Unit) {
            Log.v("QUICKSTART", "Opening Realm. The technician is: " + this.technician)
 
         val config = SyncConfiguration.Builder(techApp.currentUser(), technician!!)
@@ -51,6 +51,7 @@ class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
                         )
                     }
                 }
+                callback.invoke("technician loaded")
             }
 
             fun onError (e: java.lang.Exception) {
@@ -85,8 +86,4 @@ class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
     fun closeRealm() {
         this.realm?.close()
     }
-
-    fun connToRealmApp() {
-        openRealm()
-    }
-}
+ }

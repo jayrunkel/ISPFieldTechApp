@@ -53,7 +53,15 @@ class TechnicianCardFragment : Fragment() {
         arguments?.let {
             technician = it.getString("technician")
             model.setTechnician(technician!!)
-            model.connToRealmApp()
+            model.openRealm {
+                val messageObserver = Observer<List<Technician>?> { _ ->
+                    Log.v("QUICKSTART", "Notify recycler that the data set has changed")
+                    adapterTechnicianCard?.notifyDataSetChanged() //TODO: This is a hack. Should look at the change set
+                }
+
+                model._technicianObject?.observe(viewLifecycleOwner, messageObserver)
+                adapterTechnicianCard?.notifyDataSetChanged()
+            }
         }
     }
 
@@ -66,7 +74,9 @@ class TechnicianCardFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_technician_card, container, false)
         layoutManager = LinearLayoutManager(context)
         adapterTechnicianCard = TechnicianCardRecyclerAdapter(model)
-        binding = FragmentTechnicianCardBinding.inflate(inflater, container, false)
+        binding = FragmentTechnicianCardBinding.inflate(inflater, container, false).apply {
+            //lifecycleOwner = viewLifecycleOwner
+        }
         binding.technicianCardInclude.recyclerView.layoutManager
         binding.technicianCardInclude.recyclerView.adapter = adapterTechnicianCard
 
@@ -75,18 +85,13 @@ class TechnicianCardFragment : Fragment() {
 
         return binding.root
     }
-
+/*
     override fun onStart() {
         super.onStart()
- /*     TODO: ADD CODE TO UPDATE RECYCLER WHEN REALM CHANGES */
-        val messageObserver = Observer<List<Technician>?> { _ ->
-            Log.v("QUICKSTART", "Notify recycler that the data set has changed")
-            adapterTechnicianCard?.notifyDataSetChanged()
-        }
+ //     TODO: ADD CODE TO UPDATE RECYCLER WHEN REALM CHANGES
 
-        model._technicianObject?.observe(viewLifecycleOwner, messageObserver)
-        adapterTechnicianCard?.notifyDataSetChanged()
     }
+*/
 
     companion object {
         /**
