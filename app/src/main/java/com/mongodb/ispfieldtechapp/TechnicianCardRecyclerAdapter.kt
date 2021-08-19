@@ -1,19 +1,20 @@
 package com.mongodb.ispfieldtechapp
 
+import android.app.Application
+import android.icu.text.SimpleDateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import android.view.View
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.RecyclerView
-import com.mongodb.ispfieldtechapp.data.model.Technician
+import com.google.android.material.snackbar.Snackbar
 import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
 import com.mongodb.ispfieldtechapp.data.model.Ticket
 import io.realm.RealmList
 
-class TechnicianCardRecyclerAdapter (val techCardViewModel: TechnicianCardViewModel) : RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>() {
+class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCardViewModel, val app: Application) : RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>() {
 /*
     private val titles = arrayOf("Chapter One",
         "Chapter Two", "Chapter Three", "Chapter Four",
@@ -25,6 +26,7 @@ class TechnicianCardRecyclerAdapter (val techCardViewModel: TechnicianCardViewMo
         "Item five details", "Item six details",
         "Item seven details", "Item eight details")
 */
+/*
     private val images = intArrayOf(
         R.drawable.android_image_1,
         R.drawable.android_image_2,
@@ -34,7 +36,7 @@ class TechnicianCardRecyclerAdapter (val techCardViewModel: TechnicianCardViewMo
         R.drawable.android_image_6,
         R.drawable.android_image_7,
         R.drawable.android_image_8)
-
+*/
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var itemImage: ImageView
@@ -45,8 +47,16 @@ class TechnicianCardRecyclerAdapter (val techCardViewModel: TechnicianCardViewMo
             itemImage = itemView.findViewById(R.id.itemImage)
             itemTitle = itemView.findViewById(R.id.itemTitle)
             itemDetail = itemView.findViewById(R.id.itemDetail)
+
+            itemView.setOnClickListener { v: View ->
+                var position: Int = bindingAdapterPosition
+
+                Snackbar.make(v, "Click detected on item $position",
+                    Snackbar.LENGTH_LONG).setAction("Action", null).show()
+            }
         }
-    }
+
+}
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int):
@@ -64,10 +74,15 @@ class TechnicianCardRecyclerAdapter (val techCardViewModel: TechnicianCardViewMo
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         val tickets : RealmList<Ticket> = getTickets()
         Log.v("QUICKSTART", "onBindViewHolder with ${tickets?.size} tickets")
-        viewHolder.itemTitle.text =
-            "${tickets[i]?.ticketNum}: ${tickets[i]?.createDate} [${tickets[i]?.status}]"
+        val dateFormat : SimpleDateFormat = SimpleDateFormat("dd-MMM-yyyy")
+        viewHolder.itemTitle.text = app.resources.getString(R.string.ticketCardTitle, tickets[i]?.ticketNum, dateFormat.format(tickets[i]?.createDate), tickets[i]?.status)
         viewHolder.itemDetail.text = tickets[i]?.description
-        viewHolder.itemImage.setImageResource(images[1])
+        when (tickets[i]?.status ?: "unknown") {
+            "open" -> viewHolder.itemImage.setImageResource(R.drawable.open)
+            "in_progress" -> viewHolder.itemImage.setImageResource(R.drawable.inprogress)
+            "closed" -> viewHolder.itemImage.setImageResource(R.drawable.completed)
+            else -> viewHolder.itemImage.setImageResource(R.drawable.android_image_1)
+        }
     }
 
     override fun getItemCount(): Int {

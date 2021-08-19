@@ -73,7 +73,7 @@ class TechnicianCardFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_technician_card, container, false)
         layoutManager = LinearLayoutManager(context)
-        adapterTechnicianCard = TechnicianCardRecyclerAdapter(model)
+        adapterTechnicianCard = TechnicianCardRecyclerAdapter(model, requireActivity().application)
         binding = FragmentTechnicianCardBinding.inflate(inflater, container, false).apply {
             //lifecycleOwner = viewLifecycleOwner
         }

@@ -8,18 +8,20 @@
     app:cardBackgroundColor="#81C784"
     app:cardCornerRadius="12dp"
     app:cardElevation="3dp"
-    app:contentPadding="4dp" >
+    app:contentPadding="4dp"
+    android:foreground="?selectableItemBackground"
+    android:clickable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="4dp">
 
     <ImageView
         android:id="@+id/itemImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:contentDescription="@string/imageDescription"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,9 +30,9 @@
     <TextView
         android:id="@+id/itemTitle"
         android:layout_width="236dp"
-        android:layout_height="39dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:textSize="30sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/itemImage"
         app:layout_constraintStart_toEndOf="@+id/itemImage"
         app:layout_constraintTop_toTopOf="parent" />
