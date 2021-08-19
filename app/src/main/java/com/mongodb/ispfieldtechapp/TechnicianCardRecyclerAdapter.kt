@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.findFragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
@@ -42,6 +44,7 @@ class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCa
         var itemImage: ImageView
         var itemTitle: TextView
         var itemDetail: TextView
+        var ticketNumber : Int? = null
 
         init {
             itemImage = itemView.findViewById(R.id.itemImage)
@@ -53,6 +56,11 @@ class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCa
 
                 Snackbar.make(v, "Click detected on item $position",
                     Snackbar.LENGTH_LONG).setAction("Action", null).show()
+
+                val action : TechnicianCardFragmentDirections.ActionTechnicianCardFragmentToEditTicketFragment =
+                    TechnicianCardFragmentDirections.actionTechnicianCardFragmentToEditTicketFragment(techCardViewModel.technician!!, ticketNumber!!)
+                Navigation.findNavController(v).navigate(action)
+
             }
         }
 
@@ -77,6 +85,7 @@ class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCa
         val dateFormat : SimpleDateFormat = SimpleDateFormat("dd-MMM-yyyy")
         viewHolder.itemTitle.text = app.resources.getString(R.string.ticketCardTitle, tickets[i]?.ticketNum, dateFormat.format(tickets[i]?.createDate), tickets[i]?.status)
         viewHolder.itemDetail.text = tickets[i]?.description
+        viewHolder.ticketNumber = tickets[i]?.ticketNum
         when (tickets[i]?.status ?: "unknown") {
             "open" -> viewHolder.itemImage.setImageResource(R.drawable.open)
             "in_progress" -> viewHolder.itemImage.setImageResource(R.drawable.inprogress)

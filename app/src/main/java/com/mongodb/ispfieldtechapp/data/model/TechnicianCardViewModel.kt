@@ -13,7 +13,7 @@ import java.lang.Exception
 class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
 
     private var realm : Realm? = null
-    private var technician : String? = null
+    var technician : String? = null
 
     var _technicianObject : LiveRealmResults<Technician>? = null
 
@@ -77,10 +77,6 @@ class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
 
     fun getTechnicianObj() : Technician? {
         return this._technicianObject?.value?.first()
-    }
-
-    fun setTechnician (tech : String) {
-        technician = tech
     }
 
     fun closeRealm() {

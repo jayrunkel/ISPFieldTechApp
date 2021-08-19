@@ -32,6 +32,8 @@ open class Technician : RealmObject {
     var technicianId : String // technician email address
     var firstName : String? = null
     var lastName : String? = null
+    var phone : String? = null
+    var email : String? = null
     var tickets : RealmList<Ticket> = RealmList<Ticket>()
 
     fun getNumTickets() : Int {

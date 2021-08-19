@@ -51,8 +51,7 @@ class TechnicianCardFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            technician = it.getString("technician")
-            model.setTechnician(technician!!)
+            model.technician = it.getString("technician")
             model.openRealm {
                 val messageObserver = Observer<List<Technician>?> { _ ->
                     Log.v("QUICKSTART", "Notify recycler that the data set has changed")

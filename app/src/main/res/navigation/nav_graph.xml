@@ -11,29 +11,11 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_ticketFragment"
-            app:destination="@id/ticketFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_technicianCardFragment"
             app:destination="@id/technicianCardFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/ticketFragment"
-        android:name="com.mongodb.ispfieldtechapp.TicketFragment"
-        android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" >
-        <argument
-            android:name="technician"
-            app:argType="string" />
         <action
-            android:id="@+id/action_ticketFragment_to_resetPasswordFragment"
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
             app:destination="@id/resetPasswordFragment" />
-        <action
-            android:id="@+id/action_ticketFragment_to_editTechnicianFragment"
-            app:destination="@id/editTechnicianFragment" />
-        <action
-            android:id="@+id/action_ticketFragment_to_editTicketFragment"
-            app:destination="@id/editTicketFragment" />
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
@@ -54,8 +36,8 @@
         <argument android:name="technician"
             app:argType="string" />
         <action
-            android:id="@+id/action_editTechnicianFragment_to_ticketFragment"
-            app:destination="@id/ticketFragment" />
+            android:id="@+id/action_editTechnicianFragment_to_technicianCardFragment"
+            app:destination="@id/technicianCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/editTicketFragment"
@@ -69,11 +51,11 @@
             android:name="ticketNumber"
             app:argType="integer" />
         <action
-            android:id="@+id/action_editTicketFragment_to_ticketFragment"
-            app:destination="@id/ticketFragment" />
-        <action
             android:id="@+id/action_editTicketFragment_to_customerProfileFragment"
             app:destination="@id/customerProfileFragment" />
+        <action
+            android:id="@+id/action_editTicketFragment_to_technicianCardFragment"
+            app:destination="@id/technicianCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/customerProfileFragment"
@@ -101,5 +83,11 @@
         <argument
             android:name="technician"
             app:argType="string" />
+        <action
+            android:id="@+id/action_technicianCardFragment_to_editTicketFragment"
+            app:destination="@id/editTicketFragment" />
+        <action
+            android:id="@+id/action_technicianCardFragment_to_editTechnicianFragment"
+            app:destination="@id/editTechnicianFragment" />
     </fragment>
 </navigation>

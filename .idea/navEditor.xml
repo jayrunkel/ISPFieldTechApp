@@ -38,15 +38,6 @@
                             <option name="y" value="-246" />
                           </Point>
                         </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_editTechnicianFragment_to_ticketFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -62,11 +53,6 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_editTicketFragment_to_customerProfileFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_editTicketFragment_to_ticketFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -87,7 +73,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_loginFragment_to_ticketFragment">
+                            <entry key="action_loginFragment_to_technicianCardFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -123,40 +109,9 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-1439" />
-                            <option name="y" value="-275" />
+                            <option name="x" value="-894" />
+                            <option name="y" value="79" />
                           </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="ticketFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-893" />
-                            <option name="y" value="84" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_ticketFragment_to_editTechnicianFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_ticketFragment_to_editTicketFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_ticketFragment_to_resetPasswordFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
