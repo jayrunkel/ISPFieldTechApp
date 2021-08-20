@@ -3,9 +3,24 @@ package com.mongodb.ispfieldtechapp
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
 import io.realm.Realm
 
 class MainActivity : AppCompatActivity() {
+
+    val model: TechnicianCardViewModel by viewModels(factoryProducer = {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                //val realmApp = (this@MainActivity.application as ISPFieldTechApplication).techApp
+                return TechnicianCardViewModel() as T
+            }
+        }
+    })
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

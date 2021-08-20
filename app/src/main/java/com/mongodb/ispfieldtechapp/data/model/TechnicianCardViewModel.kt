@@ -1,7 +1,11 @@
 package com.mongodb.ispfieldtechapp.data.model
 
+import android.app.Activity
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
 import com.mongodb.ispfieldtechapp.data.realmsync.LiveRealmResults
 import io.realm.Realm
 import io.realm.RealmList
@@ -10,14 +14,15 @@ import io.realm.mongodb.App
 import io.realm.mongodb.sync.SyncConfiguration
 import java.lang.Exception
 
-class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
+class TechnicianCardViewModel : ViewModel() {
 
     private var realm : Realm? = null
     var technician : String? = null
 
     var _technicianObject : LiveRealmResults<Technician>? = null
 
-    fun openRealm(callback : (result: String? ) -> Unit) {
+
+    fun openRealm(techApp: App, callback : (result: String? ) -> Unit) {
            Log.v("QUICKSTART", "Opening Realm. The technician is: " + this.technician)
 
         val config = SyncConfiguration.Builder(techApp.currentUser(), technician!!)
@@ -32,7 +37,7 @@ class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
                 Log.v("QUICKSTART", "Realm opened for $technician")
                 this@TechnicianCardViewModel.realm = realm
 
-                this@TechnicianCardViewModel._technicianObject = LiveRealmResults(realm.where<Technician>().findAll())
+                this@TechnicianCardViewModel._technicianObject = LiveRealmResults(realm.where<Technician>().equalTo("technicianId", technician).findAll())
 
                 //For debugging purposes, create a technician object if none exists
                 this@TechnicianCardViewModel._technicianObject?.let {
@@ -73,6 +78,16 @@ class TechnicianCardViewModel (private val techApp : App) : ViewModel() {
     fun getTickets() : RealmList<Ticket> {
         val t : Technician? = getTechnicianObj()
         return t?.tickets ?: RealmList<Ticket>()
+    }
+
+    fun getTicket(tNum : Int) : Ticket? {
+        val tickets : RealmList<Ticket> = getTickets()
+
+        for(i in tickets.indices) {
+            if (tickets[i]?.ticketNum == tNum)
+                return tickets[i]
+        }
+        return null
     }
 
     fun getTechnicianObj() : Technician? {

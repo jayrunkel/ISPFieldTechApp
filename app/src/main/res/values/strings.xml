@@ -13,4 +13,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="imageDescription">image desription</string>
     <string name="ticketCardTitle">"Ticket %1$d: %2$s\n [%3$s]"</string>
+    <string name="ticketNumberLabel">Ticket Number:</string>
+    <string name="ticketNumberUnknown"><![CDATA[<Unknown>]]></string>
+    <string name="technicianLabel">Technician:</string>
+    <string name="technicianName"><![CDATA[<unknown technician>]]></string>
+    <string name="creationDateLabel">Creation Date:</string>
+    <string name="blankValue" />
+    <string name="completionDate">Completion Date:</string>
+    <string name="unknownCreationDate">01-Jan-1970</string>
+    <string name="ticketStatus">Ticket Status:</string>
+    <string name="commentLabelValue">Comment:</string>
+    <string name="cancelButtonLabel">Cancel</string>
+    <string name="submitButtonValue">Submit</string>
 </resources>

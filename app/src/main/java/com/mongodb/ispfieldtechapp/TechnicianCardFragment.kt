@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mongodb.ispfieldtechapp.data.model.Technician
@@ -39,6 +37,9 @@ class TechnicianCardFragment : Fragment() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapterTechnicianCard: RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>? = null
 
+    var model : TechnicianCardViewModel? = null
+
+    /*
     val model: TechnicianCardViewModel by viewModels(factoryProducer = {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -47,19 +48,26 @@ class TechnicianCardFragment : Fragment() {
             }
         }
     })
+    */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            model.technician = it.getString("technician")
-            model.openRealm {
-                val messageObserver = Observer<List<Technician>?> { _ ->
-                    Log.v("QUICKSTART", "Notify recycler that the data set has changed")
-                    adapterTechnicianCard?.notifyDataSetChanged() //TODO: This is a hack. Should look at the change set
-                }
+            technician = it.getString("technician")
+            activity?.let {
+                val realmApp = (it.application as ISPFieldTechApplication).techApp
+                model = ViewModelProvider(it).get(TechnicianCardViewModel::class.java)
+                model?.technician = technician
 
-                model._technicianObject?.observe(viewLifecycleOwner, messageObserver)
-                adapterTechnicianCard?.notifyDataSetChanged()
+                model?.openRealm(realmApp) {
+                    val messageObserver = Observer<List<Technician>?> { _ ->
+                        Log.v("QUICKSTART", "Notify recycler that the data set has changed")
+                        adapterTechnicianCard?.notifyDataSetChanged() //TODO: This is a hack. Should look at the change set
+                    }
+
+                    model?._technicianObject?.observe(viewLifecycleOwner, messageObserver)
+                    adapterTechnicianCard?.notifyDataSetChanged()
+                }
             }
         }
     }
@@ -72,16 +80,21 @@ class TechnicianCardFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_technician_card, container, false)
         layoutManager = LinearLayoutManager(context)
-        adapterTechnicianCard = TechnicianCardRecyclerAdapter(model, requireActivity().application)
-        binding = FragmentTechnicianCardBinding.inflate(inflater, container, false).apply {
-            //lifecycleOwner = viewLifecycleOwner
+
+        model?.let {
+
+            adapterTechnicianCard =
+                TechnicianCardRecyclerAdapter(it, requireActivity().application)
+            binding = FragmentTechnicianCardBinding.inflate(inflater, container, false).apply {
+                //lifecycleOwner = viewLifecycleOwner
+
+                this.technicianCardInclude.recyclerView.layoutManager
+                this.technicianCardInclude.recyclerView.adapter = adapterTechnicianCard
+
+                //binding.contentMain.recyclerView.layoutManager = layoutManager
+                //binding.contentMain.recyclerView.adapter = adapter
+            }
         }
-        binding.technicianCardInclude.recyclerView.layoutManager
-        binding.technicianCardInclude.recyclerView.adapter = adapterTechnicianCard
-
-        //binding.contentMain.recyclerView.layoutManager = layoutManager
-        //binding.contentMain.recyclerView.adapter = adapter
-
         return binding.root
     }
 /*

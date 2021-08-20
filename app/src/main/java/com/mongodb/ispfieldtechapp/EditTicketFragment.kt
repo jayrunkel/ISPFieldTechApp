@@ -1,10 +1,15 @@
 package com.mongodb.ispfieldtechapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
+import com.mongodb.ispfieldtechapp.data.model.TicketViewModel
+import com.mongodb.ispfieldtechapp.databinding.FragmentEditTicketBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,15 +22,26 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class EditTicketFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var technician: String? = null
+    private var ticketNumber: Int? = null
+
+    lateinit private var binding : FragmentEditTicketBinding
+
+    var technicianModel : TechnicianCardViewModel? = null
+    var ticketModel : TicketViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            technician = it.getString("technician")
+            ticketNumber = it.getInt("ticketNumber")
+            activity?.let {
+                technicianModel = ViewModelProvider(it).get(TechnicianCardViewModel::class.java)
+
+                ticketModel = TicketViewModel(
+                    technicianModel?.getTicket(ticketNumber!!), technician, ticketNumber)
+            }
         }
     }
 
@@ -34,7 +50,22 @@ class EditTicketFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_ticket, container, false)
+        //return inflater.inflate(R.layout.fragment_edit_ticket, container, false)
+        binding = FragmentEditTicketBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        binding.technicianNameValue.text = technician
+        binding.ticketNumberValue.text = ticketNumber.toString()
+        binding.creationDateValueView.text = ticketModel?.ticketObject?.createDate.toString()
+        binding.completionDateValueView.text = ticketModel?.ticketObject?.completeDate.toString()
+        binding.ticketStatusSpinner.setPrompt(ticketModel?.ticketObject?.status)
+        binding.commentValueView.text = ticketModel?.ticketObject?.description
+
+        Log.v("QUICKSTART", "Edit ticket for ${technicianModel?.technician}")
     }
 
     companion object {

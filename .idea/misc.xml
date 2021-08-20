@@ -6,7 +6,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/card_layout.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/content_recycler.xml" value="0.18072916666666666" />
-        <entry key="app/src/main/res/layout/fragment_edit_ticket.xml" value="0.18072916666666666" />
+        <entry key="app/src/main/res/layout/fragment_edit_ticket.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_item_list.xml" value="0.3296875" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/fragment_reset_password.xml" value="0.18072916666666666" />
