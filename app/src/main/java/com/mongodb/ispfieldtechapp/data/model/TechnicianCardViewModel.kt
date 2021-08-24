@@ -26,7 +26,6 @@ class TechnicianCardViewModel : ViewModel() {
            Log.v("QUICKSTART", "Opening Realm. The technician is: " + this.technician)
 
         val config = SyncConfiguration.Builder(techApp.currentUser(), technician!!)
-            // TODO: because this application only reads/writes small amounts of data, it's OK to read/write from the UI thread - NOT SURE THIS IS TRUE
             .allowWritesOnUiThread(true)
             .allowQueriesOnUiThread(true)
             .build()

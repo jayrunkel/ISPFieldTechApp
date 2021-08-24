@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mongodb.ispfieldtechapp.data.model.MetaDataViewModel
 import com.mongodb.ispfieldtechapp.data.model.Technician
 import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
 import com.mongodb.ispfieldtechapp.data.model.Ticket
@@ -38,6 +39,7 @@ class TechnicianCardFragment : Fragment() {
     private var adapterTechnicianCard: RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>? = null
 
     var model : TechnicianCardViewModel? = null
+    var metaData : MetaDataViewModel? = null
 
     /*
     val model: TechnicianCardViewModel by viewModels(factoryProducer = {
@@ -68,9 +70,15 @@ class TechnicianCardFragment : Fragment() {
                     model?._technicianObject?.observe(viewLifecycleOwner, messageObserver)
                     adapterTechnicianCard?.notifyDataSetChanged()
                 }
+                metaData = ViewModelProvider(it).get(MetaDataViewModel::class.java)
+                metaData?.openRealm(realmApp) {
+                        Log.v("QUICKSTART", "Metadata realm opened")
+                        //Log.v("QUICKSTART", "Ticket statuses: ${this.metaData?.getStatuses()}")
+                    }
+                }
             }
         }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

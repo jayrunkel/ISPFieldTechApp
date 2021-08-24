@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.mongodb.ispfieldtechapp.data.model.MetaDataViewModel
 import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
 import com.mongodb.ispfieldtechapp.data.model.TicketViewModel
 import com.mongodb.ispfieldtechapp.databinding.FragmentEditTicketBinding
@@ -30,6 +31,7 @@ class EditTicketFragment : Fragment() {
 
     var technicianModel : TechnicianCardViewModel? = null
     var ticketModel : TicketViewModel? = null
+    var metaDataModel : MetaDataViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,7 @@ class EditTicketFragment : Fragment() {
             ticketNumber = it.getInt("ticketNumber")
             activity?.let {
                 technicianModel = ViewModelProvider(it).get(TechnicianCardViewModel::class.java)
+                metaDataModel = ViewModelProvider(it).get(MetaDataViewModel::class.java)
 
                 ticketModel = TicketViewModel(
                     technicianModel?.getTicket(ticketNumber!!), technician, ticketNumber)
@@ -66,6 +69,7 @@ class EditTicketFragment : Fragment() {
         binding.commentValueView.text = ticketModel?.ticketObject?.description
 
         Log.v("QUICKSTART", "Edit ticket for ${technicianModel?.technician}")
+        Log.v("QUICKSTART", "Ticket statuses are: ${metaDataModel?.getStatuses()}")
     }
 
     companion object {
