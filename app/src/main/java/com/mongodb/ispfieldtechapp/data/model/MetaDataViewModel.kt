@@ -43,10 +43,10 @@ class MetaDataViewModel : ViewModel() {
         })
     }
 
-    fun getStatuses () : Array<String>? {
-        var returnVal : Array<String>? = null
+    fun getStatuses () : Array<String> {
+        var returnVal : Array<String> = Array<String>(0){""}
         _metaDataObject?.value?.let {
-            if (it.size > 0) returnVal = it.first()?.getTicketStatuses()
+            if (it.size > 0) returnVal = it.first().getTicketStatuses()
         }
         return returnVal
 

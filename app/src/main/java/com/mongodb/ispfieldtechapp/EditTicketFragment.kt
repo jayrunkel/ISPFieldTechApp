@@ -11,6 +11,12 @@ import com.mongodb.ispfieldtechapp.data.model.MetaDataViewModel
 import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
 import com.mongodb.ispfieldtechapp.data.model.TicketViewModel
 import com.mongodb.ispfieldtechapp.databinding.FragmentEditTicketBinding
+import android.R
+
+import android.widget.ArrayAdapter
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,6 +61,9 @@ class EditTicketFragment : Fragment() {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_ticket, container, false)
         binding = FragmentEditTicketBinding.inflate(inflater, container, false)
+
+        val adapter : ArrayAdapter<String> = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, metaDataModel!!.getStatuses())
+        binding.ticketStatusSpinner.setAdapter(adapter)
         return binding.root
     }
 

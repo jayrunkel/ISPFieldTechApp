@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="ticketStatusTypes">
+    <string-array name="ticketStatusTypeArray">
         <item>open</item>
         <item>in_progress</item>
         <item>closed</item>
