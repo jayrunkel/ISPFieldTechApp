@@ -16,7 +16,7 @@ import java.lang.Exception
 
 class TechnicianCardViewModel : ViewModel() {
 
-    private var realm : Realm? = null
+    var realm : Realm? = null
     var technician : String? = null
 
     var _technicianObject : LiveRealmResults<Technician>? = null

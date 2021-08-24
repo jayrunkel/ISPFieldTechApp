@@ -15,8 +15,7 @@ import android.R
 import android.icu.text.SimpleDateFormat
 
 import android.widget.ArrayAdapter
-
-
+import io.realm.Realm
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,7 +49,7 @@ class EditTicketFragment : Fragment() {
                 metaDataModel = ViewModelProvider(it).get(MetaDataViewModel::class.java)
 
                 ticketModel = TicketViewModel(
-                    technicianModel?.getTicket(ticketNumber!!), technician, ticketNumber)
+                    technicianModel?.getTicket(ticketNumber!!), technician, ticketNumber, technicianModel?.realm)
             }
         }
     }
@@ -65,6 +64,14 @@ class EditTicketFragment : Fragment() {
 
         val adapter : ArrayAdapter<String> = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, metaDataModel!!.getStatuses())
         binding.ticketStatusSpinner.setAdapter(adapter)
+
+        binding.submitButton.setOnClickListener() {
+            val newTicketStatus : String = binding.ticketStatusSpinner.selectedItem as String
+            val newComment : String = binding.commentValueView.getText().toString()
+
+            ticketModel?.updateTicket(newTicketStatus, newComment)
+        }
+
         return binding.root
     }
 
