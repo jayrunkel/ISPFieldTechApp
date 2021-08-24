@@ -49,18 +49,22 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/creationDateValueView" />
 
-    <TextView
+    <EditText
         android:id="@+id/commentValueView"
         android:layout_width="0dp"
         android:layout_height="400dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
+        android:gravity="start"
         android:text="@string/blankValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/ticketStatusSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/ticketStatusSpinner"
+        android:inputType="textMultiLine"
+        android:importantForAutofill="no"
+        android:scrollHorizontally="false"/>
 
     <TextView
         android:id="@+id/completionDateLabelView"

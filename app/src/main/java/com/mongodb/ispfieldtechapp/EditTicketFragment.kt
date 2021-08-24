@@ -12,6 +12,7 @@ import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
 import com.mongodb.ispfieldtechapp.data.model.TicketViewModel
 import com.mongodb.ispfieldtechapp.databinding.FragmentEditTicketBinding
 import android.R
+import android.icu.text.SimpleDateFormat
 
 import android.widget.ArrayAdapter
 
@@ -69,16 +70,22 @@ class EditTicketFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        val dateFormat : SimpleDateFormat = SimpleDateFormat("dd-MMM-yyyy")
+        val ticketStatuses : Array<String> = metaDataModel?.getStatuses() ?: Array<String>(0){""}
 
         binding.technicianNameValue.text = technician
         binding.ticketNumberValue.text = ticketNumber.toString()
-        binding.creationDateValueView.text = ticketModel?.ticketObject?.createDate.toString()
-        binding.completionDateValueView.text = ticketModel?.ticketObject?.completeDate.toString()
-        binding.ticketStatusSpinner.setPrompt(ticketModel?.ticketObject?.status)
-        binding.commentValueView.text = ticketModel?.ticketObject?.description
+        binding.creationDateValueView.text = dateFormat.format(ticketModel?.ticketObject?.createDate)
+        if (ticketModel?.ticketObject?.completeDate != null) {
+            binding.completionDateValueView.text =
+                dateFormat.format(ticketModel?.ticketObject?.completeDate)
+        }
+        //binding.ticketStatusSpinner.setPrompt(ticketModel?.ticketObject?.status)
+        binding.ticketStatusSpinner.setSelection(ticketStatuses.indexOf(ticketModel?.ticketObject?.status))
+        binding.commentValueView.setText(ticketModel?.ticketObject?.description)
 
         Log.v("QUICKSTART", "Edit ticket for ${technicianModel?.technician}")
-        Log.v("QUICKSTART", "Ticket statuses are: ${metaDataModel?.getStatuses()}")
+        Log.v("QUICKSTART", "Ticket statuses are: ${ticketStatuses}")
     }
 
     companion object {
