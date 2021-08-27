@@ -26,7 +26,7 @@ class LiveRealmResults<T : RealmModel?> @MainThread constructor(results: RealmRe
     // The listener notifies the observers whenever a change occurs.
     // This could be expanded to also return the change set in a pair.
     private val listener =
-        OrderedRealmCollectionChangeListener<RealmResults<T>> { results, changeSet ->
+        OrderedRealmCollectionChangeListener<RealmResults<T>> { results, _ ->
             Log.v("QUICKSTART", "new LiveRealmResult changeset")
             this@LiveRealmResults.setValue(
                 results

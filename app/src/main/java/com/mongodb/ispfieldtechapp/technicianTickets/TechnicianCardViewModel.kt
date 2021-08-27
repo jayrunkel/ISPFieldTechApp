@@ -1,18 +1,15 @@
-package com.mongodb.ispfieldtechapp.data.model
+package com.mongodb.ispfieldtechapp.technicianTickets
 
-import android.app.Activity
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
+import com.mongodb.ispfieldtechapp.data.model.Technician
+import com.mongodb.ispfieldtechapp.data.model.Ticket
 import com.mongodb.ispfieldtechapp.data.realmsync.LiveRealmResults
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.kotlin.where
 import io.realm.mongodb.App
 import io.realm.mongodb.sync.SyncConfiguration
-import java.lang.Exception
 
 class TechnicianCardViewModel : ViewModel() {
 

@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/editTicketFragment"
-        android:name="com.mongodb.ispfieldtechapp.EditTicketFragment"
+        android:name="com.mongodb.ispfieldtechapp.editTickets.EditTicketFragment"
         android:label="fragment_edit_ticket"
         tools:layout="@layout/fragment_edit_ticket" >
         <argument
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/technicianCardFragment"
-        android:name="com.mongodb.ispfieldtechapp.TechnicianCardFragment"
+        android:name="com.mongodb.ispfieldtechapp.technicianTickets.TechnicianCardFragment"
         android:label="fragment_technician_card"
         tools:layout="@layout/fragment_technician_card">
         <argument

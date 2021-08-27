@@ -37,11 +37,11 @@ open class Technician : RealmObject {
     var tickets : RealmList<Ticket> = RealmList<Ticket>()
 
     fun getNumTickets() : Int {
-        return tickets.size ?: 0
+        return tickets.size
     }
 
     fun createTicket(desc : String) : Ticket {
-        val newTicket : Ticket = Ticket(this.getNumTickets(), this, desc)
+        val newTicket = Ticket(this.getNumTickets(), this, desc)
         tickets.add(newTicket)
 
         return newTicket

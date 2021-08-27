@@ -1,17 +1,12 @@
 package com.mongodb.ispfieldtechapp
 
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mongodb.ispfieldtechapp.data.model.MetaDataViewModel
-import com.mongodb.ispfieldtechapp.data.model.Technician
-import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
+import com.mongodb.ispfieldtechapp.data.MetaDataViewModel
+import com.mongodb.ispfieldtechapp.technicianTickets.TechnicianCardViewModel
 import io.realm.Realm
 
 class MainActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.mongodb.ispfieldtechapp
+package com.mongodb.ispfieldtechapp.technicianTickets
 
 import android.os.Bundle
 import android.util.Log
@@ -6,14 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mongodb.ispfieldtechapp.data.model.MetaDataViewModel
+import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
+import com.mongodb.ispfieldtechapp.data.MetaDataViewModel
 import com.mongodb.ispfieldtechapp.data.model.Technician
-import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
-import com.mongodb.ispfieldtechapp.data.model.Ticket
 import com.mongodb.ispfieldtechapp.databinding.FragmentTechnicianCardBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,12 +33,12 @@ class TechnicianCardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var technician: String? = null
 
-    lateinit private var binding : FragmentTechnicianCardBinding
+    private lateinit var binding : FragmentTechnicianCardBinding
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapterTechnicianCard: RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>? = null
 
     var model : TechnicianCardViewModel? = null
-    var metaData : MetaDataViewModel? = null
+    private var metaData : MetaDataViewModel? = null
 
     /*
     val model: TechnicianCardViewModel by viewModels(factoryProducer = {
@@ -54,15 +53,15 @@ class TechnicianCardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            technician = it.getString("technician")
+        arguments?.let {b ->
+            technician = b.getString("technician")
             activity?.let {
                 val realmApp = (it.application as ISPFieldTechApplication).techApp
                 model = ViewModelProvider(it).get(TechnicianCardViewModel::class.java)
                 model?.technician = technician
 
                 model?.openRealm(realmApp) {
-                    val messageObserver = Observer<List<Technician>?> { _ ->
+                    val messageObserver = Observer<List<Technician>?> {
                         Log.v("QUICKSTART", "Notify recycler that the data set has changed")
                         adapterTechnicianCard?.notifyDataSetChanged() //TODO: This is a hack. Should look at the change set
                     }
@@ -84,7 +83,7 @@ class TechnicianCardFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_technician_card, container, false)
         layoutManager = LinearLayoutManager(context)

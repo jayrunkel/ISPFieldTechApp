@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupOnly="true"
         android:name=".ISPFieldTechApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

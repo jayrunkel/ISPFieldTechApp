@@ -1,4 +1,4 @@
-package com.mongodb.ispfieldtechapp
+package com.mongodb.ispfieldtechapp.technicianTickets
 
 import android.app.Application
 import android.icu.text.SimpleDateFormat
@@ -8,13 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.findFragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
+import com.mongodb.ispfieldtechapp.R
 import com.mongodb.ispfieldtechapp.data.model.Ticket
 import io.realm.RealmList
+import java.util.*
 
 class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCardViewModel, val app: Application) : RecyclerView.Adapter<TechnicianCardRecyclerAdapter.ViewHolder>() {
 /*
@@ -52,13 +52,16 @@ class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCa
             itemDetail = itemView.findViewById(R.id.itemDetail)
 
             itemView.setOnClickListener { v: View ->
-                var position: Int = bindingAdapterPosition
+                val position: Int = bindingAdapterPosition
 
                 Snackbar.make(v, "Click detected on item $position",
                     Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
                 val action : TechnicianCardFragmentDirections.ActionTechnicianCardFragmentToEditTicketFragment =
-                    TechnicianCardFragmentDirections.actionTechnicianCardFragmentToEditTicketFragment(techCardViewModel.technician!!, ticketNumber!!)
+                    TechnicianCardFragmentDirections.actionTechnicianCardFragmentToEditTicketFragment(
+                        techCardViewModel.technician!!,
+                        ticketNumber!!
+                    )
                 Navigation.findNavController(v).navigate(action)
 
             }
@@ -81,8 +84,8 @@ class TechnicianCardRecyclerAdapter (private val techCardViewModel: TechnicianCa
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         val tickets : RealmList<Ticket> = getTickets()
-        Log.v("QUICKSTART", "onBindViewHolder with ${tickets?.size} tickets")
-        val dateFormat : SimpleDateFormat = SimpleDateFormat("dd-MMM-yyyy")
+        Log.v("QUICKSTART", "onBindViewHolder with ${tickets.size} tickets")
+        val dateFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.US)
         viewHolder.itemTitle.text = app.resources.getString(R.string.ticketCardTitle, tickets[i]?.ticketNum, dateFormat.format(tickets[i]?.createDate), tickets[i]?.status)
         viewHolder.itemDetail.text = tickets[i]?.description
         viewHolder.ticketNumber = tickets[i]?.ticketNum

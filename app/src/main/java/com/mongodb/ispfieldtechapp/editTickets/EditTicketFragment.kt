@@ -1,4 +1,4 @@
-package com.mongodb.ispfieldtechapp
+package com.mongodb.ispfieldtechapp.editTickets
 
 import android.os.Bundle
 import android.util.Log
@@ -7,16 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.mongodb.ispfieldtechapp.data.model.MetaDataViewModel
-import com.mongodb.ispfieldtechapp.data.model.TechnicianCardViewModel
-import com.mongodb.ispfieldtechapp.data.model.TicketViewModel
+import com.mongodb.ispfieldtechapp.data.MetaDataViewModel
+import com.mongodb.ispfieldtechapp.technicianTickets.TechnicianCardViewModel
 import com.mongodb.ispfieldtechapp.databinding.FragmentEditTicketBinding
-import android.R
+import android.R.layout
 import android.icu.text.SimpleDateFormat
 
 import android.widget.ArrayAdapter
 import androidx.navigation.Navigation
-import io.realm.Realm
+import com.mongodb.ispfieldtechapp.editTickets.EditTicketFragmentDirections
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,17 +34,17 @@ class EditTicketFragment : Fragment() {
     private var technician: String? = null
     private var ticketNumber: Int? = null
 
-    lateinit private var binding : FragmentEditTicketBinding
+    private lateinit var binding : FragmentEditTicketBinding
 
-    var technicianModel : TechnicianCardViewModel? = null
-    var ticketModel : TicketViewModel? = null
-    var metaDataModel : MetaDataViewModel? = null
+    private var technicianModel : TechnicianCardViewModel? = null
+    private var ticketModel : TicketViewModel? = null
+    private var metaDataModel : MetaDataViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            technician = it.getString("technician")
-            ticketNumber = it.getInt("ticketNumber")
+        arguments?.let { b ->
+            technician = b.getString("technician")
+            ticketNumber = b.getInt("ticketNumber")
             activity?.let {
                 technicianModel = ViewModelProvider(it).get(TechnicianCardViewModel::class.java)
                 metaDataModel = ViewModelProvider(it).get(MetaDataViewModel::class.java)
@@ -58,23 +58,23 @@ class EditTicketFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_ticket, container, false)
         binding = FragmentEditTicketBinding.inflate(inflater, container, false)
 
-        val adapter : ArrayAdapter<String> = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, metaDataModel!!.getStatuses())
-        binding.ticketStatusSpinner.setAdapter(adapter)
+        val adapter : ArrayAdapter<String> = ArrayAdapter(requireContext(), layout.simple_spinner_item, metaDataModel!!.getStatuses())
+        binding.ticketStatusSpinner.adapter = adapter
 
-        binding.submitButton.setOnClickListener() {
+        binding.submitButton.setOnClickListener {
             val newTicketStatus : String = binding.ticketStatusSpinner.selectedItem as String
-            val newComment : String = binding.commentValueView.getText().toString()
+            val newComment : String = binding.commentValueView.text.toString()
 
             ticketModel?.updateTicket(newTicketStatus, newComment)
             navigateBackToTicketCards(it)
         }
 
-        binding.cancelButton.setOnClickListener() {
+        binding.cancelButton.setOnClickListener {
             navigateBackToTicketCards(it)
         }
 
@@ -91,8 +91,8 @@ class EditTicketFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val dateFormat : SimpleDateFormat = SimpleDateFormat("dd-MMM-yyyy")
-        val ticketStatuses : Array<String> = metaDataModel?.getStatuses() ?: Array<String>(0){""}
+        val dateFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.US)
+        val ticketStatuses = metaDataModel?.getStatuses() ?: arrayOf()
 
         binding.technicianNameValue.text = technician
         binding.ticketNumberValue.text = ticketNumber.toString()
@@ -106,7 +106,7 @@ class EditTicketFragment : Fragment() {
         binding.commentValueView.setText(ticketModel?.ticketObject?.description)
 
         Log.v("QUICKSTART", "Edit ticket for ${technicianModel?.technician}")
-        Log.v("QUICKSTART", "Ticket statuses are: ${ticketStatuses}")
+        Log.v("QUICKSTART", "Ticket statuses are: $ticketStatuses")
     }
 
     companion object {

@@ -1,10 +1,10 @@
-package com.mongodb.ispfieldtechapp.data.model
+package com.mongodb.ispfieldtechapp.data
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.mongodb.ispfieldtechapp.data.model.MetaData
 import com.mongodb.ispfieldtechapp.data.realmsync.LiveRealmResults
 import io.realm.Realm
-import io.realm.RealmResults
 import io.realm.kotlin.where
 import io.realm.mongodb.App
 import io.realm.mongodb.sync.SyncConfiguration
@@ -30,7 +30,7 @@ class MetaDataViewModel : ViewModel() {
                 this@MetaDataViewModel.realm = realm
 
                 this@MetaDataViewModel._metaDataObject = LiveRealmResults(realm.where<MetaData>().equalTo("technicianId", "All").findAll())
-                Log.v("QUICKSTART", "Ticket statuses: ${Arrays.toString(this@MetaDataViewModel.getStatuses())}")
+                Log.v("QUICKSTART", "Ticket statuses: ${arrayOf(this@MetaDataViewModel.getStatuses())}")
 
                 callback.invoke("metadata loaded")
             }
@@ -44,9 +44,9 @@ class MetaDataViewModel : ViewModel() {
     }
 
     fun getStatuses () : Array<String> {
-        var returnVal : Array<String> = Array<String>(0){""}
+        var returnVal = arrayOf<String>()
         _metaDataObject?.value?.let {
-            if (it.size > 0) returnVal = it.first().getTicketStatuses()
+            if (it.isNotEmpty()) returnVal = it.first().getTicketStatuses()
         }
         return returnVal
 

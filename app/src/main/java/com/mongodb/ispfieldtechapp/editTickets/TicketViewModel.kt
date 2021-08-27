@@ -1,7 +1,7 @@
-package com.mongodb.ispfieldtechapp.data.model
+package com.mongodb.ispfieldtechapp.editTickets
 
 import androidx.lifecycle.ViewModel
-import com.mongodb.ispfieldtechapp.data.realmsync.LiveRealmResults
+import com.mongodb.ispfieldtechapp.data.model.Ticket
 import io.realm.Realm
 
 class TicketViewModel : ViewModel {
