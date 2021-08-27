@@ -15,6 +15,7 @@ import android.R
 import android.icu.text.SimpleDateFormat
 
 import android.widget.ArrayAdapter
+import androidx.navigation.Navigation
 import io.realm.Realm
 
 
@@ -70,9 +71,22 @@ class EditTicketFragment : Fragment() {
             val newComment : String = binding.commentValueView.getText().toString()
 
             ticketModel?.updateTicket(newTicketStatus, newComment)
+            navigateBackToTicketCards(it)
+        }
+
+        binding.cancelButton.setOnClickListener() {
+            navigateBackToTicketCards(it)
         }
 
         return binding.root
+    }
+
+    private fun navigateBackToTicketCards(view: View) {
+        technicianModel?.technician?.let {
+            val action: EditTicketFragmentDirections.ActionEditTicketFragmentToTechnicianCardFragment =
+                EditTicketFragmentDirections.actionEditTicketFragmentToTechnicianCardFragment(it)
+            Navigation.findNavController(view).navigate(action)
+        }
     }
 
     override fun onStart() {
