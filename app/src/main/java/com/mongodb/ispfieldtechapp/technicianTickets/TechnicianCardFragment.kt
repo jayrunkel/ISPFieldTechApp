@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
+import com.mongodb.ispfieldtechapp.data.CustomerViewModel
 import com.mongodb.ispfieldtechapp.data.MetaDataViewModel
 import com.mongodb.ispfieldtechapp.data.model.Technician
 import com.mongodb.ispfieldtechapp.databinding.FragmentTechnicianCardBinding
@@ -39,6 +40,7 @@ class TechnicianCardFragment : Fragment() {
 
     var model : TechnicianCardViewModel? = null
     private var metaData : MetaDataViewModel? = null
+    private var customers : CustomerViewModel? = null
 
     /*
     val model: TechnicianCardViewModel by viewModels(factoryProducer = {
@@ -69,11 +71,18 @@ class TechnicianCardFragment : Fragment() {
                     model?._technicianObject?.observe(viewLifecycleOwner, messageObserver)
                     adapterTechnicianCard?.notifyDataSetChanged()
                 }
+
                 metaData = ViewModelProvider(it).get(MetaDataViewModel::class.java)
                 metaData?.openRealm(realmApp) {
                         Log.v("QUICKSTART", "Metadata realm opened")
                         //Log.v("QUICKSTART", "Ticket statuses: ${this.metaData?.getStatuses()}")
                     }
+/*
+                customers = ViewModelProvider(it).get(CustomerViewModel::class.java)
+                customers?.openRealm(realmApp, technician!!) {
+                    Log.v("QUICKSTART", "Customer realm opened")
+                }
+*/
                 }
             }
         }

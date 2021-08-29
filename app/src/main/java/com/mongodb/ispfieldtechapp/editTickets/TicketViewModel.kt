@@ -3,6 +3,7 @@ package com.mongodb.ispfieldtechapp.editTickets
 import androidx.lifecycle.ViewModel
 import com.mongodb.ispfieldtechapp.data.model.Ticket
 import io.realm.Realm
+import java.util.*
 
 class TicketViewModel : ViewModel {
 
@@ -24,9 +25,15 @@ class TicketViewModel : ViewModel {
     }
 
     fun updateTicket(newStatus : String, newComment: String) {
+        val closedDate : Date? = when (newStatus) {
+            "Closed" -> Date()
+            else -> null
+        }
+
         realm?.executeTransaction {
             ticketObject?.status = newStatus
             ticketObject?.description = newComment
+            ticketObject?.completeDate = closedDate
         }
     }
 

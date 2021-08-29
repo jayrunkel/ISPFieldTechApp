@@ -5,14 +5,37 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditTicketFragment">
+    tools:context=".editTickets.EditTicketFragment">
+
+    <TextView
+        android:id="@+id/customerNameView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/blankValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/completionDateValueView" />
+
+    <TextView
+        android:id="@+id/customerLabelView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/customerLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/completionDateLabelView" />
 
     <Button
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/submitButtonValue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -35,7 +58,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/ticketStatus"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/completionDateLabelView" />
+        app:layout_constraintTop_toBottomOf="@+id/customerLabelView" />
 
     <TextView
         android:id="@+id/completionDateValueView"
@@ -51,20 +74,21 @@
 
     <EditText
         android:id="@+id/commentValueView"
-        android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_width="226dp"
+        android:layout_height="358dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:gravity="start"
+        android:hint="@string/enterTicketNotesHere"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
         android:text="@string/blankValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/ticketStatusSpinner"
-        android:inputType="textMultiLine"
-        android:importantForAutofill="no"
-        android:scrollHorizontally="false"/>
+        app:layout_constraintTop_toBottomOf="@+id/ticketStatusSpinner" />
 
     <TextView
         android:id="@+id/completionDateLabelView"
@@ -156,18 +180,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:entries="@array/ticketStatusTypes"
+        android:entries="@array/ticketStatusTypeArray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/completionDateValueView" />
+        app:layout_constraintTop_toBottomOf="@+id/customerNameView" />
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/cancelButtonLabel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

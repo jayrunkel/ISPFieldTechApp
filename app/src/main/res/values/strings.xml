@@ -25,4 +25,6 @@
     <string name="commentLabelValue">Comment:</string>
     <string name="cancelButtonLabel">Cancel</string>
     <string name="submitButtonValue">Submit</string>
+    <string name="enterTicketNotesHere">Enter tickets notes here</string>
+    <string name="customerLabel">Customer:</string>
 </resources>

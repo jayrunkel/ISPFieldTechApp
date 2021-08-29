@@ -101,7 +101,7 @@ class EditTicketFragment : Fragment() {
             binding.completionDateValueView.text =
                 dateFormat.format(ticketModel?.ticketObject?.completeDate)
         }
-        //binding.ticketStatusSpinner.setPrompt(ticketModel?.ticketObject?.status)
+        binding.customerNameView.text = ticketModel?.ticketObject?.customer?.fullname
         binding.ticketStatusSpinner.setSelection(ticketStatuses.indexOf(ticketModel?.ticketObject?.status))
         binding.commentValueView.setText(ticketModel?.ticketObject?.description)
 
