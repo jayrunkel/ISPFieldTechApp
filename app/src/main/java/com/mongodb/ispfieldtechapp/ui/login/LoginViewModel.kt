@@ -12,6 +12,7 @@ import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
 
 import com.mongodb.ispfieldtechapp.R
 import io.realm.mongodb.App
+import java.util.Arrays.asList
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -66,6 +67,36 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 val eMsg = "Failed to log $username. Error: ${it.error.message}"
                 Log.e("QUICKSTART", eMsg)
                 _loginResult.value = LoginResult(error = R.string.login_failed)
+            }
+        }
+    }
+
+    fun resetPassword(realmApp: App, username: String, password: String) {
+        realmApp.emailPassword.callResetPasswordFunctionAsync(username, password, arrayOf("hello")) {
+            if (!it.isSuccess) {
+                Log.e("QUICKSTART", "Could reset password for user: $username")
+                Log.e("QUICKSTART", "Error: ${it.error}")
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            } else {
+                Log.i("QUICKSTART", "Successfully changed password for user: $username")
+                // when the account has been created successfully, log in to the account
+                // TODO: need to create login state for password reset or registered user
+                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
+            }
+        }
+    }
+
+    fun createUser(realmApp: App, username: String, password: String) {
+        realmApp.emailPassword.registerUserAsync(username, password) {
+            if (!it.isSuccess) {
+                Log.e("QUICKSTART", "Could not register user: $username")
+                Log.e("QUICKSTART", "Error: ${it.error}")
+                _loginResult.value = LoginResult(error = R.string.login_failed)
+            } else {
+                Log.i("QUICKSTART", "Successfully registered user: $username")
+                // when the account has been created successfully, log in to the account
+                // TODO: need to create login state for password reset or registered user
+                _loginResult.value = LoginResult(success = LoggedInUserView(displayName = username))
             }
         }
     }

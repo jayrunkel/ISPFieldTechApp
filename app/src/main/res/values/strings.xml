@@ -27,4 +27,6 @@
     <string name="submitButtonValue">Submit</string>
     <string name="enterTicketNotesHere">Enter tickets notes here</string>
     <string name="customerLabel">Customer:</string>
+    <string name="resetPasswordLink">Create Account or Reset Password</string>
+    <string name="createResetPasswordLabel">Create Account/Reset Password</string>
 </resources>

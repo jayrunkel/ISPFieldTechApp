@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
-import com.mongodb.ispfieldtechapp.data.CustomerViewModel
 import com.mongodb.ispfieldtechapp.data.MetaDataViewModel
 import com.mongodb.ispfieldtechapp.data.model.Technician
 import com.mongodb.ispfieldtechapp.databinding.FragmentTechnicianCardBinding
@@ -40,7 +39,6 @@ class TechnicianCardFragment : Fragment() {
 
     var model : TechnicianCardViewModel? = null
     private var metaData : MetaDataViewModel? = null
-    private var customers : CustomerViewModel? = null
 
     /*
     val model: TechnicianCardViewModel by viewModels(factoryProducer = {

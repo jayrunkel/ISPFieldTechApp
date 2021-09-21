@@ -1,51 +1,62 @@
-package com.mongodb.ispfieldtechapp.ui.login
+package com.mongodb.ispfieldtechapp.resetPassword
 
-import android.net.Uri
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.mongodb.ispfieldtechapp.ISPFieldTechApplication
-import com.mongodb.ispfieldtechapp.databinding.FragmentLoginBinding
-
-
 import com.mongodb.ispfieldtechapp.R
+import com.mongodb.ispfieldtechapp.databinding.FragmentResetPasswordBinding
+import com.mongodb.ispfieldtechapp.ui.login.LoggedInUserView
+import com.mongodb.ispfieldtechapp.ui.login.LoginViewModel
+import com.mongodb.ispfieldtechapp.ui.login.LoginViewModelFactory
 import io.realm.mongodb.App
+import io.realm.mongodb.UserProfile
 
-class LoginFragment : Fragment() {
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "technician"
 
+/**
+ * A simple [Fragment] subclass.
+ * Use the [ResetPasswordFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class ResetPasswordFragment : Fragment() {
+    // TODO: Rename and change types of parameters
+    private var technician: String? = null
     private lateinit var loginViewModel: LoginViewModel
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentResetPasswordBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            technician = it.getString(ARG_PARAM1)
+        }
 
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        _binding = FragmentResetPasswordBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
@@ -53,7 +64,8 @@ class LoginFragment : Fragment() {
         val passwordEditText = binding.password
         val loginButton = binding.login
         val loadingProgressBar = binding.loading
-        val resetPasswordLink = binding.resetPasswordLinkView
+
+        if (usernameEditText.text.toString() == "") usernameEditText.setText(this.technician)
 
         val app: App = (requireActivity().application as ISPFieldTechApplication).techApp
 
@@ -72,16 +84,16 @@ class LoginFragment : Fragment() {
             })
 
         loginViewModel.loginResult.observe(viewLifecycleOwner,
-        Observer { loginResult ->
-            loginResult ?: return@Observer
-            loadingProgressBar.visibility = View.GONE
-            loginResult.error?.let {
-                showLoginFailed(it)
-            }
-            loginResult.success?.let {
-                updateUiWithUser(it)
-            }
-        })
+            Observer { loginResult ->
+                loginResult ?: return@Observer
+                loadingProgressBar.visibility = View.GONE
+                loginResult.error?.let {
+                    showLoginFailed(it)
+                }
+                loginResult.success?.let {
+                    updateUiWithUser(it)
+                }
+            })
 
         val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -99,8 +111,10 @@ class LoginFragment : Fragment() {
                 )
             }
         }
+
         usernameEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.addTextChangedListener(afterTextChangedListener)
+
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(app,
@@ -113,25 +127,31 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
-            loginViewModel.login(app,
+            val allUsers = app.allUsers()
+            var foundUser : UserProfile? = null
+            for ((key, profile) in allUsers) {
+                if (profile.profile.email == usernameEditText.text.toString()) {
+                    foundUser = profile.profile
+                    break
+                }
+            }
+
+           // if (app.allUsers().containsKey(usernameEditText.text.toString())) {
+            if (foundUser != null) {
+                loginViewModel.resetPassword(app,
+                    usernameEditText.text.toString(),
+                    passwordEditText.text.toString())
+            } else
+                loginViewModel.createUser(app,
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
             )
         }
+    }
 
-        resetPasswordLink.setOnClickListener() {
-
-            if (loginViewModel.loginFormState.value?.usernameError == null) {
-                val action: LoginFragmentDirections.ActionLoginFragmentToResetPasswordFragment =
-                    LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment(
-                        usernameEditText.text.toString()
-                    )
-                Navigation.findNavController(it).navigate(action)
-            }
-            else {
-                Toast.makeText(requireContext(), "Please enter a valid email address", Toast.LENGTH_LONG).show()
-            }
-        }
+    private fun showLoginFailed(@StringRes errorString: Int) {
+        val appContext = context?.applicationContext ?: return
+        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -142,17 +162,26 @@ class LoginFragment : Fragment() {
 
         val curView = this.view ?: return
         //val action : LoginFragmentDirections.ActionLoginFragmentToTicketFragment = LoginFragmentDirections.actionLoginFragmentToTicketFragment(model.displayName)
-        val action : LoginFragmentDirections.ActionLoginFragmentToTechnicianCardFragment = LoginFragmentDirections.actionLoginFragmentToTechnicianCardFragment(model.displayName)
+        val action = ResetPasswordFragmentDirections.actionResetPasswordFragmentToLoginFragment()
         Navigation.findNavController(curView).navigate(action)
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment ResetPasswordFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            ResetPasswordFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                }
+            }
     }
 }
